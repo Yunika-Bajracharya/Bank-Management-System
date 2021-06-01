@@ -1,14 +1,17 @@
 
 class bank {
-  char name[30];
-  char accountName[20];
-  char accountType[20];
-  int initialBalance;
+  char accountName[40];
+  char accountType[30];
+  double balance;
+  double depositAmount;
+  double withdrawAmount;
 
 public:
   void menu();
-  void getInfo(); // contains value of the above ones
+  void getInfo(); // gets the information of the account
   void deposit();
+  void balanceInfo();
   void withdraw();
   void info(); // shows all the information of the account
+  void exit();
 };
