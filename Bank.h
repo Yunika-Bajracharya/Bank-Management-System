@@ -1,5 +1,7 @@
-
-class bank {
+#include <cstdlib>
+#include <iostream>
+#include <stdio.h>
+class Bank {
   char accountName[40];
   char accountType[30];
   double balance;
