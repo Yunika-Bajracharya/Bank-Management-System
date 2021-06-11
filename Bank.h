@@ -2,7 +2,6 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <vector>
 
 #include "User.h"
 #ifdef WIN32
@@ -17,7 +16,6 @@ class Bank {
   double balance;
   double depositAmount;
   double withdrawAmount;
-  std::vector<User> users;
 
 public:
   void menu();
