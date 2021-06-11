@@ -15,7 +15,7 @@ void Bank::menu() {
               << "\t\t *********************************\n"
               << "\t\t Option: ";
     std::cin >> option;
-    system("cls");
+    system(CLEAR);
     std::cout << std::endl;
     switch (option) {
     case 1:
@@ -82,4 +82,3 @@ void Bank::info() {
             << "Account Type: " << accountType << std::endl
             << "Balance: " << balance << std::endl;
 }
-

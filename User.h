@@ -1,3 +1,4 @@
+#pragma once
 #include "Bank.h"
 #define CURRENT 1
 #define SAVINGS 2
