@@ -2,6 +2,8 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <random>
+#include <time.h>
 #include <vector>
 
 #include "User.h"
@@ -11,20 +13,21 @@
 #define CLEAR "clear"
 #endif
 
+#define ASCII_NUM_PUSH 48
+
 class Bank {
-  char accountName[40];
-  char accountType[30];
-  double balance;
-  double depositAmount;
-  double withdrawAmount;
   std::vector<User> users;
 
 public:
   void menu();
-  void getInfo(); // gets the information of the account
+  void setInfo(); // set the information of the account
   void deposit();
   void balanceInfo();
   void withdraw();
-  void info(); // shows all the information of the account
+  void showInfo(); // shows all the information of the account
   void exit();
+
+  int getAccoutIndex();
+
+  static char *generateID();
 };

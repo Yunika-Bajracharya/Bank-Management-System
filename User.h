@@ -1,8 +1,10 @@
 #pragma once
-#include "Bank.h"
 #define CURRENT 1
 #define SAVINGS 2
 #define FIXED 3
+
+#include "string.h"
+#define ID_LENGTH 2
 
 class User {
 public:
@@ -22,7 +24,7 @@ public:
   int withdraw(long);
 
 private:
-  const char *name, *id;
+  char name[40], id[ID_LENGTH];
   int type;
   long balance;
 };

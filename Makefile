@@ -7,5 +7,5 @@ else
 	OUTPUT=output
 endif
 
-ouput: Main.cpp Bank.cpp 
+ouput: Main.cpp Bank.cpp User.cpp
 	$(CC) $^ -o $(OUTPUT) $(FLAGS)

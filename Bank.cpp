@@ -16,10 +16,9 @@ void Bank::menu() {
               << "\t\t Option: ";
     std::cin >> option;
     system(CLEAR);
-    std::cout << std::endl;
     switch (option) {
     case 1:
-      getInfo();
+      setInfo();
       break;
     case 2:
       deposit();
@@ -31,18 +30,24 @@ void Bank::menu() {
       withdraw();
       break;
     case 5:
-      info();
+      showInfo();
       break;
     }
   } while (option != 6);
 }
 
-void Bank::getInfo() {
+void Bank::setInfo() {
   using std::cin;
   using std::cout;
+
+  char accountName[40];
+  int accountType;
+  long balance;
+
   fflush(stdin);
   cout << "Enter Account Name: ";
-  cin.getline(accountName, 40);
+  // cin.getline(accountName, 40);
+  cin >> accountName;
   cout << std::endl;
   cout << "Choose your Account Type[CURRENT | SAVINGS | FIXED] : ";
   cin >> accountType;
@@ -50,35 +55,103 @@ void Bank::getInfo() {
   cout << "How much amount would you like to Deposit? ";
   cin >> balance;
   cout << std::endl;
+
+  char *ID = generateID();
+
+  User user(accountName, ID, accountType, balance);
+  cout << "New user created, ID: " << ID << std::endl;
+  users.push_back(user);
+
+  delete ID;
 }
 
 void Bank::deposit() {
+  int index = getAccoutIndex();
+  if (index == -1) {
+    return;
+  }
+  User user = users.at(index);
+
+  long depositAmount;
   std::cout << "Enter the amount you want to deposit: ";
   std::cin >> depositAmount;
 
-  balance += depositAmount;
-  std::cout << "\nRs. " << depositAmount
-            << " has been successfully deposited. \n";
+  int depositStatus = user.deposit(depositAmount);
+  if (depositStatus) {
+    std::cout << "\nRs." << depositAmount << "has been successfully deposited."
+              << std::endl;
+
+    users.erase(users.begin() + index);
+    users.push_back(user);
+  } else {
+    std::cout << "\n Something Went wrong" << std::endl;
+  }
 }
 
 void Bank::balanceInfo() {
-  std::cout << "Your current balance is Rs. " << balance << std::endl;
+  std::cout << "Your current balance is Rs. " << users.at(0).getBalance()
+            << std::endl;
 }
 void Bank::withdraw() {
+  int index = getAccoutIndex();
+  if (index == -1) {
+    return;
+  }
+  User user = users.at(index);
+
+  long withdrawAmount;
   std::cout << "Enter the amount you want to withdraw: ";
   std::cin >> withdrawAmount;
 
-  if (withdrawAmount <= balance) {
-    balance -= withdrawAmount;
+  int withdrawStatus = user.withdraw(withdrawAmount);
+  if (withdrawStatus) {
     std::cout << "\nRs. " << withdrawAmount
               << " has been withdrawn from your account.";
+    users.erase(users.begin() + index);
+    users.push_back(user);
   } else {
     std::cout << "Insufficient Balance \n";
   }
 }
 
-void Bank::info() {
-  std::cout << "Account Name: " << accountName << std::endl
-            << "Account Type: " << accountType << std::endl
-            << "Balance: " << balance << std::endl;
+void Bank::showInfo() {
+  int index = getAccoutIndex();
+  if (index == -1) {
+    return;
+  }
+  User user = users.at(index);
+  std::cout << "Account Name: " << user.getName() << std::endl
+            << "Accout ID:" << user.getID() << std::endl
+            << "Account Type: " << user.getAccoutType() << std::endl
+            << "Balance: " << user.getBalance() << std::endl;
+}
+
+int Bank::getAccoutIndex() {
+  char ID[ID_LENGTH];
+  std::cout << "Enter the accout ID: ";
+  std::cin >> ID;
+  for (int i = 0; i < users.size(); i++) {
+    if (strcmp(ID, users.at(i).getID()) == 0) {
+      std::cout << "User Found" << std::endl;
+      return i;
+    }
+  }
+  std::cout << "Invalid ID" << std::endl;
+  return -1;
+}
+
+char *Bank::generateID() {
+  std::srand(time(NULL));
+  char *ID = new char[ID_LENGTH];
+
+  for (int i = 0; i < ID_LENGTH; i++) {
+    ID[i] = static_cast<char>((rand() % 10) + ASCII_NUM_PUSH);
+  }
+
+  ID[ID_LENGTH + 1] = '\0';
+
+  // TODO
+  // Make each ID unique
+
+  return ID;
 }
