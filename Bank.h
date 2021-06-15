@@ -25,6 +25,8 @@ public:
   void balanceInfo();
   void withdraw();
   void showInfo(); // shows all the information of the account
+  void updateInfo();
+  // void removeAccount();
   void exit();
 
   int getAccoutIndex();

@@ -11,7 +11,9 @@ void Bank::menu() {
               << "\t\t 3. Check your balance \n"
               << "\t\t 4. Withdraw amount \n"
               << "\t\t 5. View your Account Information \n"
-              << "\t\t 6. Exit \n"
+              << "\t\t 6. Update your Account Information \n"
+              << "\t\t 7. Remove your Account \n"
+              << "\t\t 8. Exit \n"
               << "\t\t *********************************\n"
               << "\t\t Option: ";
     std::cin >> option;
@@ -32,8 +34,14 @@ void Bank::menu() {
     case 5:
       showInfo();
       break;
+    case 6:
+      updateInfo();
+      break;
+/*     case 7:
+      removeAccount();
+      break; */
     }
-  } while (option != 6);
+  } while (option != 8);
 }
 
 void Bank::setInfo() {
@@ -41,6 +49,8 @@ void Bank::setInfo() {
   using std::cout;
 
   char accountName[40];
+  char address[40];
+  int phoneNumber;
   int accountType;
   long balance;
 
@@ -48,6 +58,12 @@ void Bank::setInfo() {
   cout << "Enter Account Name: ";
   // cin.getline(accountName, 40);
   cin >> accountName;
+  cout << std::endl;
+  cout << "Enter your Address: ";
+  cin >> address;
+  cout << std::endl;
+  cout << "Enter your contact number: ";
+  cin >> phoneNumber;
   cout << std::endl;
   cout << "Choose your Account Type[CURRENT | SAVINGS | FIXED] : ";
   cin >> accountType;
@@ -92,6 +108,7 @@ void Bank::balanceInfo() {
   std::cout << "Your current balance is Rs. " << users.at(0).getBalance()
             << std::endl;
 }
+
 void Bank::withdraw() {
   int index = getAccoutIndex();
   if (index == -1) {
@@ -126,9 +143,52 @@ void Bank::showInfo() {
             << "Balance: " << user.getBalance() << std::endl;
 }
 
+void Bank::updateInfo() {
+  using std::cin;
+  using std::cout;
+
+  char accountName[40];
+  char address[40];
+  int phoneNumber;
+  int accountType;
+  long balance;
+
+  int index = getAccoutIndex();
+  if (index == -1) {
+    return;
+  }
+  User user = users.at(index);
+
+  cout << "\nPrevious Data" << std::endl
+            << "Account Name: " << user.getName() << std::endl
+            << "Accout ID:" << user.getID() << std::endl
+            << "Account Type: " << user.getAccoutType() << std::endl
+            << "Balance: " << user.getBalance() << std::endl
+            << "\nEnter new data: "<< std::endl;
+  cout << "\nEnter Account Name: ";
+  cin >> accountName;
+  cout << std::endl;
+  cout << "Enter your Address: ";
+  cin >> address;
+  cout << std::endl;
+  cout << "Enter your contact number: ";
+  cin >> phoneNumber;
+  cout << std::endl;
+  cout << "Choose your Account Type[CURRENT | SAVINGS | FIXED] : ";
+  cin >> accountType;
+  cout << std::endl;
+
+  char *ID = generateID();
+
+  cout << "Your new account ID is: " << ID << std::endl;
+  users.push_back(user);
+
+  delete ID;
+}
+
 int Bank::getAccoutIndex() {
   char ID[ID_LENGTH];
-  std::cout << "Enter the accout ID: ";
+  std::cout << "Enter the account ID: ";
   std::cin >> ID;
   for (int i = 0; i < users.size(); i++) {
     if (strcmp(ID, users.at(i).getID()) == 0) {
